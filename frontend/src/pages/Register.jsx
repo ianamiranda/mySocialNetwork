@@ -2,61 +2,67 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { register } from '../services/auth';
 
-function Register() {
+const Register = () => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: ''
+  });
+
   const [error, setError] = useState('');
 
-  const handleSubmit = async (e) => {
+  const handleChange = e => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleRegister = async (e) => {
     e.preventDefault();
-    setError('');
     try {
-      await register({ name, email, password }); 
-      navigate('/');
+      await register(formData);
+      navigate('/'); // Go to login
     } catch (err) {
-      setError('Error while registering.');
+      setError('Error registering user');
     }
   };
 
   return (
-    <div style={{ maxWidth: '400px', margin: 'auto', paddingTop: '100px' }}>
+    <div>
       <h2>Register</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Name:</label><br />
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label>Email:</label><br />
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label>Password:</label><br />
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit" style={{ marginTop: '10px' }}>Register</button>
+      <form onSubmit={handleRegister}>
+        <input
+          name="name"
+          type="text"
+          placeholder="Name"
+          value={formData.name}
+          onChange={handleChange}
+          required
+        /><br/>
+        <input
+          name="email"
+          type="email"
+          placeholder="Email"
+          value={formData.email}
+          onChange={handleChange}
+          required
+        /><br/>
+        <input
+          name="password"
+          type="password"
+          placeholder="Password"
+          value={formData.password}
+          onChange={handleChange}
+          required
+        /><br/>
+        <button type="submit">Register</button>
       </form>
       {error && <p style={{ color: 'red' }}>{error}</p>}
-      <p>You already have an account? <a href="/" style={{ color: 'blue' }}>Login</a></p>
+      <p>Already have an account? <a href="/">Login</a></p>
     </div>
   );
-}
+};
 
 export default Register;
