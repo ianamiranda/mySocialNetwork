@@ -17,14 +17,15 @@ const Login = ({ loginCallback }) => {
       // Mostrar el ID del usuario si está presente en la respuesta
       if (response && response.idUser) {
         console.log('Usuario logueado con ID:', response.idUser);
+        loginCallback(response);  // ✅ Pasa el usuario con ID a App.js
+        navigate('/');
       } else {
         console.log('No se recibió ID de usuario en la respuesta.');
+        alert('Error inesperado: no se obtuvo ID de usuario.');
       }
 
-      loginCallback();  // Update the authentication state
-      navigate('/');
     } catch (error) {
-      alert('Invalid credentials');
+      alert('Credenciales inválidas');
       console.error('Error en login:', error.response?.data || error.message);
     }
   };

@@ -29,14 +29,23 @@ public class AuthController {
     private AuthService authService;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest request, HttpSession session) {
+public ResponseEntity<?> login(@RequestBody LoginRequest request, HttpSession session) {
+    System.out.println("💥 Entró al login");
+    System.out.println("📨 Email recibido: " + request.getEmail());
+    System.out.println("🔐 Password recibido: " + request.getPassword());
+    System.out.println("Intentando iniciar sesión con email: " + request.getEmail());
+
     User user = authService.authenticateAndGetUser(request.getEmail(), request.getPassword(), session);
+    
     if (user != null) {
-        return ResponseEntity.ok(user);  // Devuelve el usuario completo como JSON
+        System.out.println("Usuario autenticado correctamente: " + user.getEmail());
+        return ResponseEntity.ok(user);  // Devolver el usuario completo como JSON
     } else {
+        System.out.println("Credenciales inválidas para el email: " + request.getEmail());
         return ResponseEntity.status(401).body("Invalid credentials");
     }
 }
+
 
 
     @PostMapping("/register")
