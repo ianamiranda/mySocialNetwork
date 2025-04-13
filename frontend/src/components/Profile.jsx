@@ -15,7 +15,7 @@ const Profile = ({ userId }) => {
   });
 
   useEffect(() => {
-    console.log('userId:', userId); // Aquí vemos si el ID se pasa correctamente
+    console.log('userId:', userId); // Verifica si el ID se pasa correctamente
 
     if (!userId) return;
 
@@ -57,9 +57,9 @@ const Profile = ({ userId }) => {
 
       <div className="profile-image">
         {user.imgUser ? (
-          <img src={user.imgUser} alt="Profile" />
+          <img src={user.imgUser} alt="Profile" className="profile-img" />
         ) : (
-          <FaUserCircle size={80} />
+          <FaUserCircle size={100} />
         )}
       </div>
 

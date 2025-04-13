@@ -4,13 +4,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import network.backend.model.User;
 import network.backend.model.jpa.UserRepository;
@@ -37,10 +31,15 @@ public class UserController {
 
         if (userOptional.isPresent()) {
             User user = userOptional.get();
+
             user.setNameUser(updatedUser.getNameUser());
             user.setDescriptionUser(updatedUser.getDescriptionUser());
-            user.setPassword(updatedUser.getPassword()); // Consider hashing
             user.setImgUser(updatedUser.getImgUser());
+
+            // Solo actualiza la contraseña si llega una nueva no vacía
+            if (updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty()) {
+                user.setPassword(updatedUser.getPassword());
+            }
 
             User saved = userRepository.save(user);
             return ResponseEntity.ok(saved);
@@ -49,4 +48,3 @@ public class UserController {
         }
     }
 }
-
