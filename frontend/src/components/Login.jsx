@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../services/auth';  // Import the login function from auth.js
 
-const Login = ({ loginCallback }) => {  // Pass the loginCallback prop to set authentication state
+const Login = ({ loginCallback }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
@@ -12,15 +12,23 @@ const Login = ({ loginCallback }) => {  // Pass the loginCallback prop to set au
 
     try {
       const response = await login(email, password);  // Call login API function
-      console.log(response);  // Log the response for debugging
+      console.log('Login response:', response);
+
+      // Mostrar el ID del usuario si está presente en la respuesta
+      if (response && response.idUser) {
+        console.log('Usuario logueado con ID:', response.idUser);
+      } else {
+        console.log('No se recibió ID de usuario en la respuesta.');
+      }
+
       loginCallback();  // Update the authentication state
-      navigate('/');  // Redirect to the home page after successful login
+      navigate('/');
     } catch (error) {
       alert('Invalid credentials');
+      console.error('Error en login:', error.response?.data || error.message);
     }
   };
 
-  // Navigate to the Register page
   const navigateToRegister = () => {
     navigate('/register');
   };

@@ -9,12 +9,12 @@ import network.backend.model.User;
 
 public interface BelongRepository extends JpaRepository<Belong, BelongId> {
 
-    List<Belong> findByMember(User member);
+    List<Belong> findByUser(User member);
 
     List<Belong> findByGroup(Group group);
 
-    boolean existsByMemberAndGroup(User member, Group group);
+    boolean existsByUserAndGroup(User member, Group group);
 
-    void deleteByMemberAndGroup(User member, Group group);
+    void deleteByUserAndGroup(User member, Group group);
 
 }

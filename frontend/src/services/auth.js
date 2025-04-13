@@ -6,15 +6,15 @@ export const login = async (email, password) => {
   const response = await axios.post(
     `${API}/login`,
     { email, password },
-    { withCredentials: true }  // Ensure session cookie is included
+    { withCredentials: true }
   );
-  return response.data;  // Return response data (you can adjust as needed)
+  return response.data;
 };
 
-export const register = async (name, email, password) => {
+export const register = async (nameUser, email, password) => {
   const response = await axios.post(
     `${API}/register`,
-    { name, email, password },
+    { nameUser, email, password },
     { withCredentials: true }
   );
   return response.data;

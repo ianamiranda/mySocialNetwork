@@ -12,14 +12,16 @@ import jakarta.servlet.http.HttpSession;
 import network.backend.dto.LoginRequest;
 import network.backend.dto.RegisterRequest;
 import network.backend.model.User;
-import network.backend.service.AuthService;
+import network.backend.model.jpa.AuthService;
 
 
 @RestController
 @RequestMapping("/api/auth")
 @CrossOrigin(
-  origins = "http://localhost:3000",
-  allowCredentials = "true"
+  origins = "http://localhost:3000",  // Frontend URL
+  allowCredentials = "true",  // Permite enviar cookies (credenciales) con la solicitud
+  allowedHeaders = "*",  // Permite cualquier encabezado
+  maxAge = 3600  // Tiempo de cache de pre-solicitud de CORS
 )
 public class AuthController {
 
@@ -28,13 +30,14 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest request, HttpSession session) {
-        boolean isAuthenticated = authService.authenticate(request.getEmail(), request.getPassword(), session);
-        if (isAuthenticated) {
-            return ResponseEntity.ok("Login successful");
-        } else {
-            return ResponseEntity.status(401).body("Invalid credentials");
-        }
+    User user = authService.authenticateAndGetUser(request.getEmail(), request.getPassword(), session);
+    if (user != null) {
+        return ResponseEntity.ok(user);  // Devuelve el usuario completo como JSON
+    } else {
+        return ResponseEntity.status(401).body("Invalid credentials");
     }
+}
+
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest request) {

@@ -2,16 +2,16 @@ package network.backend.dto;
 
 
 public class RegisterRequest {
-    private String name;
+    private String nameUser;
     private String email;
     private String password;
 
-    public String getName() {
-        return name;
+    public String getNameUser() {
+        return nameUser;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNameUser(String nameUser) {
+        this.nameUser = nameUser;
     }
 
     public String getEmail() {

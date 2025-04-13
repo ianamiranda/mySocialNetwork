@@ -42,3 +42,8 @@
     color: #007bff;
   }
   
+  .footer-nav button.active {
+    color: #000; /* Darker color for selected icon */
+    font-weight: bold;
+  }
+  

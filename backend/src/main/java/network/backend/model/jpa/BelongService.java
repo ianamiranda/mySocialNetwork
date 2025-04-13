@@ -17,7 +17,7 @@ public class BelongService {
     BelongRepository belongRepository;
 
     public Belong belong(User member, Group group) {
-        if (!belongRepository.existsByMemberAndGroup(member, group)) {
+        if (!belongRepository.existsByUserAndGroup(member, group)) {
             Belong belong = new Belong(member, group);
             return belongRepository.save(belong);
         }
@@ -25,14 +25,14 @@ public class BelongService {
     }
 
     public void exitGroup(User member, Group group) {
-        belongRepository.deleteByMemberAndGroup(member, group);
+        belongRepository.deleteByUserAndGroup(member, group);
     }
 
     public boolean isMember(User member, Group group) {
-        return belongRepository.existsByMemberAndGroup(member, group);
+        return belongRepository.existsByUserAndGroup(member, group);
     }
     public List<Group> getGroupsByMember(User member) {
-        return belongRepository.findByMember(member)
+        return belongRepository.findByUser(member)
                 .stream()
                 .map(Belong::getGroup)
                 .collect(Collectors.toList());
