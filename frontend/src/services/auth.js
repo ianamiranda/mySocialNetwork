@@ -1,22 +1,30 @@
 import axios from 'axios';
 
-const API = axios.create({
-  baseURL: 'http://localhost:8080/api',
-  withCredentials: true,
-});
+const API = 'http://localhost:8080/api/auth';
 
-export const login = (email, password) => {
-  return API.post('/auth/login', { email, password });
+export const login = async (email, password) => {
+  const response = await axios.post(
+    `${API}/login`,
+    { email, password },
+    { withCredentials: true }  // Ensure session cookie is included
+  );
+  return response.data;  // Return response data (you can adjust as needed)
 };
 
-export const register = (userData) => {
-  return API.post('/auth/register', userData);
+export const register = async (name, email, password) => {
+  const response = await axios.post(
+    `${API}/register`,
+    { name, email, password },
+    { withCredentials: true }
+  );
+  return response.data;
 };
 
-export const logout = () => {
-  return API.post('/auth/logout');
-};
-
-export const getCurrentUser = () => {
-  return API.get('/auth/me');
+export const logout = async () => {
+  const response = await axios.post(
+    `${API}/logout`,
+    {},
+    { withCredentials: true }
+  );
+  return response.data;
 };
