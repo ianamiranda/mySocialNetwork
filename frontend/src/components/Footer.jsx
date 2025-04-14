@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { FaHome, FaSearch, FaUserFriends, FaPlusCircle, FaBell, FaUser } from 'react-icons/fa';
+import { FaHome, FaEnvelope, FaUserFriends, FaPlusCircle, FaBell, FaUser } from 'react-icons/fa';
 import './Home.css';
 
 const Footer = ({ current }) => {
@@ -15,9 +15,9 @@ const Footer = ({ current }) => {
         <FaHome size={24} />
         <span>Home</span>
       </button>
-      <button onClick={() => navigate('/search-posts')} className={isActive('/search-posts') ? 'active' : ''}>
-        <FaSearch size={24} />
-        <span>Post Search</span>
+      <button onClick={() => navigate('/messages')} className={isActive('/messages') ? 'active' : ''}>
+        <FaEnvelope size={24} />
+        <span>Messages</span>
       </button>
       <button onClick={() => navigate('/search-friends')} className={isActive('/search-friends') ? 'active' : ''}>
         <FaUserFriends size={24} />

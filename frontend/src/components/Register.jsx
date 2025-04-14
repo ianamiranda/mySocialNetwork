@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { register } from '../services/auth';  // Import the register function from auth.js
+import { register } from '../services/auth';
+import './Auth.css';
 
 const Register = () => {
   const [email, setEmail] = useState('');
@@ -11,48 +12,44 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Call the backend to register the new user
-      const response = await register(name, email, password);  // Call register API function
-      console.log(response);  // Log the response for debugging
+      await register(name, email, password);
       alert('Registration successful!');
-      navigate('/login');  // Redirect to the login page after successful registration
+      navigate('/login');
     } catch (error) {
       alert('Registration failed');
     }
   };
 
-  // Navigate to the Login page
-  const navigateToLogin = () => {
-    navigate('/login');
-  };
-
   return (
-    <div>
+    <div className="auth-container">
       <h2>Register</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="auth-form">
         <input
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="Full Name"
+          required
         />
         <input
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Email"
+          required
         />
         <input
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Password"
+          required
         />
-        <button type="submit">Register</button>
+        <button type="submit" className="auth-button">Register</button>
       </form>
-      <p>
+      <p className="auth-footer">
         Already have an account?{' '}
-        <button onClick={navigateToLogin}>Login here</button>
+        <span className="auth-link" onClick={() => navigate('/login')}>Login here</span>
       </p>
     </div>
   );

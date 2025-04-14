@@ -4,6 +4,7 @@ import Login from './components/Login';
 import Register from './components/Register';
 import Home from './components/Home';
 import Profile from './components/Profile';
+import CreatePost from './components/CreatePost'; // Asegúrate de tener este componente
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -24,7 +25,7 @@ const App = () => {
       <Routes>
         <Route 
           path="/" 
-          element={isAuthenticated ? <Home logout={logout} /> : <Navigate to="/login" />} 
+          element={isAuthenticated ? <Home logout={logout} userId={userId} /> : <Navigate to="/login" />} 
         />
         <Route 
           path="/login" 
@@ -37,6 +38,10 @@ const App = () => {
         <Route 
           path="/profile" 
           element={isAuthenticated ? <Profile userId={userId} /> : <Navigate to="/login" />}
+        />
+        <Route 
+          path="/create-post" 
+          element={isAuthenticated ? <CreatePost userId={userId} /> : <Navigate to="/login" />} 
         />
       </Routes>
     </Router>

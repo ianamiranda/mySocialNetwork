@@ -3,6 +3,7 @@ import axios from 'axios';
 import Footer from './Footer';
 import './Profile.css';
 import { FaUserCircle } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
 const Profile = ({ userId }) => {
   const [user, setUser] = useState(null);
@@ -13,26 +14,54 @@ const Profile = ({ userId }) => {
     password: '',
     imgUser: ''
   });
+  const [posts, setPosts] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    console.log('userId:', userId); // Verifica si el ID se pasa correctamente
-
     if (!userId) return;
 
+    // Get user data
     axios.get(`http://localhost:8080/api/user/${userId}`)
       .then((res) => {
         setUser(res.data);
         setFormData({
           nameUser: res.data.nameUser,
           descriptionUser: res.data.descriptionUser || '',
-          password: '',
+          password: res.data.password || '',
           imgUser: res.data.imgUser || ''
         });
       })
       .catch((err) => {
-        console.error(err);
+        console.error('Error fetching user data:', err);
       });
+
+    fetchUserPosts();
   }, [userId]);
+
+  const fetchUserPosts = () => {
+    axios.get(`http://localhost:8080/api/posts/user/${userId}/public`)
+      .then((res) => {
+        setPosts(res.data);
+      })
+      .catch((err) => {
+        console.error('Error fetching user posts:', err);
+      });
+  };
+
+  const handleDelete = (postId) => {
+    if (window.confirm("Are you sure you want to delete this post?")) {
+      axios.delete(`http://localhost:8080/api/posts/${postId}`, {
+        params: { userId }
+      })
+        .then(() => {
+          setPosts(prev => prev.filter(post => post.idPost !== postId));
+        })
+        .catch((err) => {
+          console.error('Error deleting post:', err);
+          alert('You are not allowed to delete this post.');
+        });
+    }
+  };
 
   const handleChange = (e) => {
     setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
@@ -45,8 +74,12 @@ const Profile = ({ userId }) => {
         setEditing(false);
       })
       .catch((err) => {
-        console.error(err);
+        console.error('Error saving user data:', err);
       });
+  };
+
+  const handleBack = () => {
+    setEditing(false);
   };
 
   if (!user) return <div>Loading profile...</div>;
@@ -81,7 +114,7 @@ const Profile = ({ userId }) => {
           <input
             type="password"
             name="password"
-            placeholder="New Password"
+            placeholder="Current Password"
             value={formData.password}
             onChange={handleChange}
           />
@@ -93,6 +126,7 @@ const Profile = ({ userId }) => {
             onChange={handleChange}
           />
           <button onClick={handleSave}>Save</button>
+          <button onClick={handleBack}>Back to Profile</button>
         </div>
       ) : (
         <div className="profile-info">
@@ -101,6 +135,23 @@ const Profile = ({ userId }) => {
           <button onClick={() => setEditing(true)}>Edit Profile</button>
         </div>
       )}
+
+      <div className="user-posts">
+        <h3>Your Public Posts</h3>
+        {posts.length === 0 ? (
+          <p>You haven't made any public posts yet.</p>
+        ) : (
+          posts.map((post) => (
+            <div key={post.idPost} className="post">
+              <h4>{post.namePost}</h4>
+              <p>{post.text}</p>
+              <button onClick={() => handleDelete(post.idPost)} className="delete-post-btn">
+                Delete
+              </button>
+            </div>
+          ))
+        )}
+      </div>
 
       <Footer active="profile" />
     </div>

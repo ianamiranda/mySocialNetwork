@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { login } from '../services/auth';  // Import the login function from auth.js
+import { login } from '../services/auth';
+import './Auth.css';
 
 const Login = ({ loginCallback }) => {
   const [email, setEmail] = useState('');
@@ -9,52 +10,42 @@ const Login = ({ loginCallback }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
-      const response = await login(email, password);  // Call login API function
-      console.log('Login response:', response);
-
-      // Mostrar el ID del usuario si está presente en la respuesta
+      const response = await login(email, password);
       if (response && response.idUser) {
-        console.log('Usuario logueado con ID:', response.idUser);
-        loginCallback(response);  // ✅ Pasa el usuario con ID a App.js
+        loginCallback(response);
         navigate('/');
       } else {
-        console.log('No se recibió ID de usuario en la respuesta.');
-        alert('Error inesperado: no se obtuvo ID de usuario.');
+        alert('Unexpected error: missing user ID.');
       }
-
     } catch (error) {
-      alert('Credenciales inválidas');
-      console.error('Error en login:', error.response?.data || error.message);
+      alert('Invalid credentials');
     }
   };
 
-  const navigateToRegister = () => {
-    navigate('/register');
-  };
-
   return (
-    <div>
+    <div className="auth-container">
       <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="auth-form">
         <input
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Email"
+          required
         />
         <input
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Password"
+          required
         />
-        <button type="submit">Login</button>
+        <button type="submit" className="auth-button">Login</button>
       </form>
-      <p>
+      <p className="auth-footer">
         Don't have an account?{' '}
-        <button onClick={navigateToRegister}>Register here</button>
+        <span className="auth-link" onClick={() => navigate('/register')}>Register here</span>
       </p>
     </div>
   );
