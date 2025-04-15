@@ -5,7 +5,7 @@ import './Profile.css';
 import { FaUserCircle } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
-const Profile = ({ userId }) => {
+const Profile = ({ userId, logout }) => {
   const [user, setUser] = useState(null);
   const [editing, setEditing] = useState(false);
   const [formData, setFormData] = useState({
@@ -133,6 +133,7 @@ const Profile = ({ userId }) => {
           <h3>{user.nameUser}</h3>
           <p>{user.descriptionUser || 'No bio available'}</p>
           <button onClick={() => setEditing(true)}>Edit Profile</button>
+          <button onClick={logout} className="logout-btn">Logout</button>
         </div>
       )}
 

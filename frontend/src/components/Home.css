@@ -72,13 +72,19 @@
   font-size: 14px;
 }
 
+.post-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
 .post-author {
   font-size: 13px;
   color: #888;
 }
 
 .delete-btn {
-  margin-top: 10px;
   background-color: #e0f0ff;
   border: none;
   padding: 6px 12px;
@@ -147,4 +153,32 @@
 .footer-nav button.active {
   color: #000;
   font-weight: bold;
+}
+
+.like-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.like-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.like-btn.liked {
+  color: red;
+}
+
+.like-btn:hover {
+  transform: scale(1.1);
+}
+
+.like-count {
+  font-size: 14px;
+  color: gray;
+  transition: color 0.3s ease;
 }

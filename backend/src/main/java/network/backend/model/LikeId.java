@@ -8,6 +8,9 @@ public class LikeId {
     private Long idUser;
     private Long idPost;
 
+    public LikeId() {}
+
+
     public LikeId(Long idUser, Long idPost) {
         this.idUser = idUser;
         this.idPost = idPost;

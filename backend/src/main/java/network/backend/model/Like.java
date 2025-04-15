@@ -24,6 +24,9 @@ public class Like {
     @JoinColumn(name = "post_id", referencedColumnName = "idPost")
     private Post post;
 
+    public Like() {}
+
+
     public Like (User user, Post post) {
         this.user = user;
         this.post = post;
