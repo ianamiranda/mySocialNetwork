@@ -15,7 +15,7 @@ import network.backend.model.jpa.UserRepository;
 
 @RestController
 @RequestMapping("/api/follow")
-@CrossOrigin(origins = "http://localhost:3000") // general fallback
+@CrossOrigin(origins = "http://localhost:3000")
 public class FollowController {
 
     @Autowired
