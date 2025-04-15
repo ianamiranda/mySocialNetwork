@@ -1,4 +1,3 @@
-// SearchFriends.jsx
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './SearchFriends.css';
@@ -24,7 +23,9 @@ const SearchFriends = ({ userId }) => {
     try {
       const res = await axios.get('http://localhost:8080/api/user/all');
       setUsers(res.data.filter(u => u.idUser !== userId));
-    } catch (err) {}
+    } catch (err) {
+      console.error("Error fetching users", err);
+    }
   };
 
   const fetchFollows = async () => {
@@ -36,12 +37,43 @@ const SearchFriends = ({ userId }) => {
 
       const followersRes = await axios.get(`http://localhost:8080/api/follow/followers/${userId}`);
       setFollowers(followersRes.data);
-    } catch (err) {}
+    } catch (err) {
+      console.error("Error fetching follows", err);
+    }
   };
 
   const handleUserClick = (userId) => {
-    // Redirigir al perfil de solo visualización
     navigate(`/user-profile/${userId}`);
+  };
+
+  const handleFollow = async (targetUserId, e) => {
+    e.stopPropagation();
+    try {
+      console.log("Sending follow request from", userId, "to", targetUserId);
+      await axios.post('http://localhost:8080/api/follow', {
+        followerId: userId,
+        followedId: targetUserId,
+      });
+      fetchFollows();
+    } catch (err) {
+      console.error("Error following user", err);
+    }
+  };
+
+  const handleUnfollow = async (targetUserId, e) => {
+    e.stopPropagation();
+    try {
+      console.log("Sending unfollow request from", userId, "to", targetUserId);
+      await axios.delete('http://localhost:8080/api/follow', {
+        params: {
+          followerId: userId,
+          followedId: targetUserId,
+        },
+      });
+      fetchFollows();
+    } catch (err) {
+      console.error("Error unfollowing user", err);
+    }
   };
 
   const renderUserCard = (user, isFriendAction = false) => (
@@ -70,9 +102,9 @@ const SearchFriends = ({ userId }) => {
       {isFriendAction && (
         <div className="action-btn">
           {friends.includes(user.idUser) ? (
-            <button className="remove-btn">Unfollow friend</button>
+            <button className="remove-btn" onClick={(e) => handleUnfollow(user.idUser, e)}>Unfollow friend</button>
           ) : (
-            <button className="add-btn">Add friend</button>
+            <button className="add-btn" onClick={(e) => handleFollow(user.idUser, e)}>Add friend</button>
           )}
         </div>
       )}
@@ -81,7 +113,9 @@ const SearchFriends = ({ userId }) => {
 
   const renderTabContent = () => {
     if (activeTab === 'all') {
-      return users.map(user => renderUserCard(user, true));
+      return users
+        .filter(user => user.nameUser.toLowerCase().includes(searchTerm.toLowerCase()))
+        .map(user => renderUserCard(user, true));
     } else if (activeTab === 'followers') {
       return followers.length === 0 ? (
         <p>No followers yet.</p>

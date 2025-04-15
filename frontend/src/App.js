@@ -6,11 +6,9 @@ import Home from './components/Home';
 import Profile from './components/Profile';
 import CreatePost from './components/CreatePost';
 import SearchFriends from './components/SearchFriends';
-<<<<<<< Updated upstream
 import UserProfile from './components/UserProfile'; 
-=======
 import Messages from './components/Messages';
->>>>>>> Stashed changes
+
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -64,19 +62,16 @@ const App = () => {
           path="/search-friends" 
           element={isAuthenticated ? <SearchFriends userId={userId} /> : <Navigate to="/login" />} 
         />
-<<<<<<< Updated upstream
 
         {/* Ruta para Ver el Perfil de Otro Usuario */}
         <Route 
           path="/user-profile/:id" 
           element={isAuthenticated ? <UserProfile userId={userId} /> : <Navigate to="/login" />}
         />
-=======
         <Route 
           path="/messages"
           element={isAuthenticated ? <Messages userId={userId} /> : <Navigate to="/login" />}
         />  
->>>>>>> Stashed changes
       </Routes>
     </Router>
   );
