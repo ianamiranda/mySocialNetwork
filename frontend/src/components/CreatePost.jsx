@@ -7,6 +7,7 @@ const CreatePost = ({ userId }) => {
   const [formData, setFormData] = useState({
     namePost: '',
     text: '',
+    // El tipo de post es fijo y se define como "PUBLIC"
     type: 'PUBLIC',
   });
 
@@ -71,20 +72,7 @@ const CreatePost = ({ userId }) => {
           />
         </div>
 
-        <div className="form-group">
-          <label htmlFor="type" className="form-label">Post Type</label>
-          <select
-            id="type"
-            name="type"
-            value={formData.type}
-            onChange={handleChange}
-            className="form-select"
-          >
-            <option value="PUBLIC">Public</option>
-            <option value="PRIVATE">Private</option>
-          </select>
-        </div>
-
+        {/* Eliminamos la opción para seleccionar el tipo de post */}
         <div className="form-actions">
           <button type="submit" className="submit-btn">Create Post</button>
           <button type="button" className="back-btn" onClick={goBackHome}>Back to Home</button>
