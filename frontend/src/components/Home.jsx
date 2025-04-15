@@ -5,7 +5,7 @@ import { FaSearch } from 'react-icons/fa';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import './Home.css';
 
-const Home = ({ logout, userId }) => {
+const Home = ({ userId }) => {
   const [posts, setPosts] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [likes, setLikes] = useState({});

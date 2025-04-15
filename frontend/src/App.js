@@ -6,6 +6,7 @@ import Home from './components/Home';
 import Profile from './components/Profile';
 import CreatePost from './components/CreatePost';
 import SearchFriends from './components/SearchFriends';
+import UserProfile from './components/UserProfile'; 
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -58,6 +59,12 @@ const App = () => {
         <Route 
           path="/search-friends" 
           element={isAuthenticated ? <SearchFriends userId={userId} /> : <Navigate to="/login" />} 
+        />
+
+        {/* Ruta para Ver el Perfil de Otro Usuario */}
+        <Route 
+          path="/user-profile/:id" 
+          element={isAuthenticated ? <UserProfile userId={userId} /> : <Navigate to="/login" />}
         />
       </Routes>
     </Router>

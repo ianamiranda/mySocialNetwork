@@ -1,8 +1,10 @@
+// SearchFriends.jsx
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './SearchFriends.css';
 import { FaSearch, FaUserCircle } from 'react-icons/fa';
 import Footer from './Footer';
+import { useNavigate } from 'react-router-dom';
 
 const SearchFriends = ({ userId }) => {
   const [users, setUsers] = useState([]);
@@ -11,6 +13,7 @@ const SearchFriends = ({ userId }) => {
   const [followers, setFollowers] = useState([]);
   const [followed, setFollowed] = useState([]);
   const [activeTab, setActiveTab] = useState('all');
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchUsers();
@@ -36,34 +39,13 @@ const SearchFriends = ({ userId }) => {
     } catch (err) {}
   };
 
-  const handleAddFriend = async (targetUserId) => {
-    try {
-      await axios.post('http://localhost:8080/api/follow', {
-        followerId: userId,
-        followedId: targetUserId
-      });
-      fetchFollows();
-    } catch (err) {}
+  const handleUserClick = (userId) => {
+    // Redirigir al perfil de solo visualización
+    navigate(`/user-profile/${userId}`);
   };
-
-  const handleRemoveFriend = async (targetUserId) => {
-    try {
-      await axios.delete('http://localhost:8080/api/follow', {
-        params: {
-          followerId: userId,
-          followedId: targetUserId
-        }
-      });
-      fetchFollows();
-    } catch (err) {}
-  };
-
-  const filteredUsers = users.filter(user =>
-    (user.nameUser || '').toLowerCase().includes(searchTerm.toLowerCase())
-  );
 
   const renderUserCard = (user, isFriendAction = false) => (
-    <div key={user.idUser} className="user-card">
+    <div key={user.idUser} className="user-card" onClick={() => handleUserClick(user.idUser)}>
       <div className="user-image">
         {user.imgUser ? (
           <img
@@ -88,9 +70,9 @@ const SearchFriends = ({ userId }) => {
       {isFriendAction && (
         <div className="action-btn">
           {friends.includes(user.idUser) ? (
-            <button className="remove-btn" onClick={() => handleRemoveFriend(user.idUser)}>Unfollow friend</button>
+            <button className="remove-btn">Unfollow friend</button>
           ) : (
-            <button className="add-btn" onClick={() => handleAddFriend(user.idUser)}>Add friend</button>
+            <button className="add-btn">Add friend</button>
           )}
         </div>
       )}
@@ -99,7 +81,7 @@ const SearchFriends = ({ userId }) => {
 
   const renderTabContent = () => {
     if (activeTab === 'all') {
-      return filteredUsers.map(user => renderUserCard(user, true));
+      return users.map(user => renderUserCard(user, true));
     } else if (activeTab === 'followers') {
       return followers.length === 0 ? (
         <p>No followers yet.</p>
@@ -114,7 +96,6 @@ const SearchFriends = ({ userId }) => {
       );
     }
   };
-  
 
   return (
     <div className="search-friends-container">
