@@ -4,15 +4,17 @@ import Login from './components/Login';
 import Register from './components/Register';
 import Home from './components/Home';
 import Profile from './components/Profile';
-import CreatePost from './components/CreatePost'; // Asegúrate de tener este componente
+import CreatePost from './components/CreatePost';
+import SearchFriends from './components/SearchFriends';
+
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [userId, setUserId] = useState(null); // Guardar el ID del usuario
+  const [userId, setUserId] = useState(null);
 
   const login = (userData) => {
     setIsAuthenticated(true);
-    setUserId(userData.idUser); // Establecer el ID del usuario loggeado
+    setUserId(userData.idUser);
   };
 
   const logout = () => {
@@ -42,6 +44,10 @@ const App = () => {
         <Route 
           path="/create-post" 
           element={isAuthenticated ? <CreatePost userId={userId} /> : <Navigate to="/login" />} 
+        />
+        <Route 
+          path="/search-friends" 
+          element={isAuthenticated ? <SearchFriends userId={userId} /> : <Navigate to="/login" />} 
         />
       </Routes>
     </Router>

@@ -1,5 +1,6 @@
 package network.backend.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,12 @@ public class UserController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @GetMapping("/all")
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
 
     // GET user by ID
     @GetMapping("/{id}")
@@ -47,4 +54,7 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
     }
+
+
+    
 }
