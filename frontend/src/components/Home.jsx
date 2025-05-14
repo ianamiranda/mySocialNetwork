@@ -13,9 +13,12 @@ const Home = ({ userId }) => {
 
   useEffect(() => {
     axios.get('http://localhost:8080/api/posts/public')
-      .then((res) => setPosts(res.data))
+      .then((res) => {
+        setPosts(res.data.reverse());
+      })
       .catch((err) => console.error('Error fetching public posts:', err));
   }, []);
+  
 
   useEffect(() => {
     posts.forEach((post) => {
