@@ -8,6 +8,9 @@ public class BelongId {
     private Long idUser;
     private Long idGroup;
 
+    public BelongId() {
+    }
+
     public BelongId(Long idUser, Long idGroup) {
         this.idUser = idUser;
         this.idGroup = idGroup;

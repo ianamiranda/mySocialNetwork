@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import network.backend.model.Group;
+import network.backend.model.Post;
 import network.backend.model.View;
 
 @Service
@@ -23,8 +24,10 @@ public class ViewService {
         viewRepository.delete(view);
     }  
 
-    public List<View> findByGroup(Group group) {
-        return viewRepository.findByGroup(group);
+    public List<Post> findByGroup(Group group) {
+        List<View> viewsGroup = viewRepository.findByGroup(group);
+        List<Post> posts = viewsGroup.stream().map(View::getPost).toList();
+        return posts;
     }
 
 }

@@ -27,8 +27,8 @@ public class NotificationService {
         return notificationRepository.findByUser(user);
     }
 
-    public void saveNotification(Notification notification) {
-        notificationRepository.save(notification);
+    public Notification saveNotification(Notification notification) {
+        return notificationRepository.save(notification);
     }
 
     public void deleteNotification(Notification notification) {

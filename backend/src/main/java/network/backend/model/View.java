@@ -15,6 +15,10 @@ public class View {
     @EmbeddedId
     private ViewId idView;
 
+    public View() {
+
+    }
+
     @ManyToOne
     @MapsId("idPost")
     @JoinColumn(name = "post_id", referencedColumnName = "idPost")

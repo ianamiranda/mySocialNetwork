@@ -21,7 +21,7 @@ public class GroupService {
         return groupRepository.findById(idGroup).orElse(null);
     }
 
-    public Group creatGroup (Group group) {
+    public Group createGroup (Group group) {
         return groupRepository.save(group);
     }
 

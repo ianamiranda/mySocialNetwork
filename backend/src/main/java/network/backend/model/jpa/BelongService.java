@@ -38,4 +38,8 @@ public class BelongService {
                 .collect(Collectors.toList());
     }
 
+    public Belong create(Belong belong) {
+        return belongRepository.save(belong);
+    }
+
 }

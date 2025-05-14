@@ -54,6 +54,10 @@ const SearchFriends = ({ userId }) => {
         followerId: userId,
         followedId: targetUserId,
       });
+      await axios.post('http://localhost:8080/api/notifications/createFollow', {
+        targetUserId: targetUserId ,
+        actorUserId: userId
+      });
       fetchFollows();
     } catch (err) {
       console.error("Error following user", err);

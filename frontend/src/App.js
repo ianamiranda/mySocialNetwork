@@ -8,7 +8,8 @@ import CreatePost from './components/CreatePost';
 import SearchFriends from './components/SearchFriends';
 import UserProfile from './components/UserProfile'; 
 import Messages from './components/Messages';
-
+import GroupMessages from './components/GroupMessages';
+import Notifications from './components/Notifications';
 
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -72,6 +73,16 @@ const App = () => {
           path="/messages"
           element={isAuthenticated ? <Messages userId={userId} /> : <Navigate to="/login" />}
         />  
+        <Route
+          path="/messages/group/:idGroup"
+          element={isAuthenticated ? <GroupMessages userId={userId} /> : <Navigate to="/login" />}
+        />
+
+        <Route
+          path="/notifications"
+          element={isAuthenticated ? <Notifications userId={userId} /> : <Navigate to="/login" />}
+        />
+
       </Routes>
     </Router>
   );

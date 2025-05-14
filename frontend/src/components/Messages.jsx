@@ -2,6 +2,8 @@ import { useEffect } from "react";
 import axios from 'axios';
 import { useState} from "react";
 import Footer from "./Footer";
+import { Link } from 'react-router-dom';
+import './Messages.css';
 
 const Messages = ({userId}) => {
     const [groups, setGroups] = useState([]);
@@ -15,7 +17,7 @@ const Messages = ({userId}) => {
     useEffect(() => {
         const fetchGroups = async () => {
             try {
-                const response = await axios.get(`http://localhost:8080/api/groups/${userId}`);
+                const response = await axios.get(`http://localhost:8080/api/messages/${userId}`);
                 setGroups(response.data);
             } catch (error) {
                 console.error('Error fetching groups:', error);
@@ -24,7 +26,7 @@ const Messages = ({userId}) => {
 
         const fetchFriends = async () => {
             try {
-                const response = await axios.get(`http://localhost:8080/followed/${userId}`);
+                const response = await axios.get(`http://localhost:8080/api/follow/followed/${userId}`);
                 // el resultado es una lista de objetos Follow, así que mapeamos al usuario seguido
                 const followedUsers = response.data.map(f => f.followed);
                 setFriends(followedUsers);
@@ -38,7 +40,7 @@ const Messages = ({userId}) => {
 
     const handleCreateGroup = async () => {
         try {
-            await axios.post("http://localhost:8080/api/groups", {
+            await axios.post("http://localhost:8080/api/messages/createGroup", {
                 name: groupName,
                 userIds: [userId, ...selectedFriends]
             });
@@ -47,7 +49,7 @@ const Messages = ({userId}) => {
             setSelectedFriends([]);
             setShowCreateForm(false);
             // Refrescar lista de grupos
-            const response = await axios.get(`http://localhost:8080/api/groups/${userId}`);
+            const response = await axios.get(`http://localhost:8080/api/messages/${userId}`);
             setGroups(response.data);
         } catch (error) {
             console.error('Error creating group:', error);
@@ -57,21 +59,48 @@ const Messages = ({userId}) => {
     return (
         <div className="messages-container">
         <h1>Messages</h1>
+        <div className="groups-list">
+        {groups.map(group => (
+            <Link
+            to={`/messages/group/${group.idGroup}`}
+            state={{ groupInfo: group, userId: userId }}
+            key={group.idGroup}
+            style={{
+                textDecoration: 'none',
+                color: 'inherit'
+            }}
+            >
+                <div
+                    className="group-item"
+                    style={{
+                    border: '1px solid #ccc',
+                    borderRadius: '8px',
+                    padding: '10px',
+                    marginBottom: '10px',
+                    cursor: 'pointer',
+                    backgroundColor: '#f9f9f9'
+                    }}
+                >
+                    <h3>{group.nameGroup}</h3>
+                </div>
+                </Link>
+            ))}
+        </div>
 
         <button onClick={() => setShowCreateForm(!showCreateForm)}>
-            {showCreateForm ? "Cancelar" : "Crear nuevo grupo"}
+            {showCreateForm ? "Cancel" : "Create new group"}
         </button>
 
         {showCreateForm && (
             <div className="create-group-form">
                 <input
                     type="text"
-                    placeholder="Nombre del grupo"
+                    placeholder="Name of the group"
                     value={groupName}
                     onChange={e => setGroupName(e.target.value)}
                 />
                 <h3>Selecciona amigos:</h3>
-                {friends.map(friend => (
+                {friends.map((friend, index) => (
                     <label key={friend.idUser}>
                         <input
                             type="checkbox"
@@ -85,27 +114,13 @@ const Messages = ({userId}) => {
                                 );
                             }}
                         />
-                        {friend.username}
+                        {friend.nameUser}
                     </label>
                 ))}
-                <button onClick={handleCreateGroup}>Crear</button>
+                <button onClick={handleCreateGroup}>Create</button>
             </div>
         )}
-
-        <div className="groups-list">
-            {groups.map(group => (
-                <div key={group.idGroup} onClick={() => setSelectedGroup(group)} className="group-item">
-                    {group.nameGroup}
-                </div>
-            ))}
-        </div>
-
-        {selectedGroup && (
-            <div className="messages-detail">
-                <h2>{selectedGroup.nameGroup}</h2>
-                {/* Aquí puedes mostrar los mensajes del grupo seleccionado */}
-            </div>
-        )}
+    
         <Footer current="/messages" />
     </div>
     );    

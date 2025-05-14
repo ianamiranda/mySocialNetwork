@@ -1,20 +1,8 @@
-package network.backend.model;
+package network.backend.dto;
 
-import jakarta.persistence.Embeddable;
-
-@Embeddable
-public class ViewId {
-    
+public class ViewRequest {
     private Long idPost;
     private Long idGroup;
-
-    public ViewId() {
-    }
-
-    public ViewId(Long idPost, Long idGroup) {
-        this.idPost = idPost;
-        this.idGroup = idGroup;
-    }
 
     public Long getIdPost() {
         return idPost;
@@ -31,5 +19,4 @@ public class ViewId {
     public void setIdGroup(Long idGroup) {
         this.idGroup = idGroup;
     }
-
 }

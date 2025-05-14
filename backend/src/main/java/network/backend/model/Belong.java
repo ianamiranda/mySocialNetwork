@@ -24,6 +24,9 @@ public class Belong {
     @JoinColumn(name = "group_id", referencedColumnName = "idGroup")
     private Group group;
 
+    public Belong() {
+    }
+
     public Belong (User user, Group group) {
         this.user = user;
         this.group = group;

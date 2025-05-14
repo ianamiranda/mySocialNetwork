@@ -68,6 +68,11 @@ const Home = ({ userId }) => {
         params: { userId, postId },
       });
 
+      await axios.post('http://localhost:8080/api/notifications/createLike', {
+        targetUserId: postId ,
+        actorUserId: userId
+      })
+
       setLikes((prevLikes) => ({
         ...prevLikes,
         [postId]: !prevLikes[postId]
