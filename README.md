@@ -8,9 +8,14 @@ The goal of **mySocialNetwork** is to provide a foundational social media experi
 
 This project can be used as a starting point to understand how modern social networks work under the hood, integrating essential functionalities like user management, feeds, and secure communication between client and server.
 
-
 ---
 
+## Table of Contents
+ 
+- [Features](#features)  
+- [Tech Stack](#tech-stack)  
+
+---
 
 ## Features
 
@@ -30,8 +35,3 @@ This project can be used as a starting point to understand how modern social net
 - **Backend**: Java (REST APIs)  
 - **Database**: MongoDB
 - **Other tools**: JWT for authentication
-
----
-
-## Project Structure
-
